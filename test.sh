@@ -121,7 +121,7 @@ echo " "
 echo "Checking that we can atleast manage 2Hz"
 echo "Running; prober.py $credential_dev1 2 20 1.3.6.1.4.1.4171.40.$ooid > ./fastprobe "
 startTime=$(date +%s)
-prober.py $credential_dev1 2 20 1.3.6.1.4.1.4171.40.$ooid > ./fastprobe
+./prober.py $credential_dev1 2 20 1.3.6.1.4.1.4171.40.$ooid > ./fastprobe
 endTime=$(date +%s)
 duration=$((endTime-startTime))
 echo "That should have taken (approx) 10s. It took, $endTime-$startTime = $duration s. "
@@ -135,8 +135,8 @@ else
 fi
 echo " "
 echo "Checking: data rate (high), nasty agent "
-echo "prober.py $credential_dev1 $Fs $Ns 1.3.6.1.4.1.4171.40.17 > ./high_data" 
-prober.py $credential_dev1 $Fs $Ns 1.3.6.1.4.1.4171.40.17 > ./high_data
+echo "./prober.py $credential_dev1 $Fs $Ns 1.3.6.1.4.1.4171.40.17 > ./high_data" 
+./prober.py $credential_dev1 $Fs $Ns 1.3.6.1.4.1.4171.40.17 > ./high_data
 echo "Got " $(wc -l ./high_data) " samples "
 awk -F'|' '{print $2}' ./high_data > ./high_rates.log
 chkIF=17;## Get counter rate
@@ -171,8 +171,8 @@ sudo tcpdump -c 20 -w ./blob.pcap -i $internetNIC2 host $refdevice2 and udp &
 echo "tcpdump on"
 sleep 3
 #echo "Checking blob2";ls -la ./blob
-echo "Running prober.py $credential_dev2 1 10 1.3.6.1.2.1.2.2.1.10.14" 
-prober.py $credential_dev2 1 10 1.3.6.1.2.1.2.2.1.10.14
+echo "Running ./prober.py $credential_dev2 1 10 1.3.6.1.2.1.2.2.1.10.14" 
+./prober.py $credential_dev2 1 10 1.3.6.1.2.1.2.2.1.10.14
 sleep 1 
 #echo "Checking blob3"; ls -la ./blob
 tcpdump -c 10 -ttt -r ./blob.pcap -n ip dst $refdevice2 and udp and dst port $portrefdev2 > ./blob
@@ -197,8 +197,8 @@ echo ".1.3.6.1.2.1.2.2.1.10.3" >> ./myOids
 echo ".1.3.6.1.2.1.2.2.1.16.3" >> ./myOids
 echo ".1.3.6.1.2.1.2.2.1.10.4" >> ./myOids
 echo ".1.3.6.1.2.1.2.2.1.16.4" >> ./myOids
-echo "Running: prober.py $credential_dev2 1 1 1.3.6.1.2.1.2.2.1.10.3 1.3.6.1.2.1.2.2.1.16.3 1.3.6.1.2.1.2.2.1.10.4 1.3.6.1.2.1.2.2.1.16.4 "
-prober.py $credential_dev2 1 1 1.3.6.1.2.1.2.2.1.10.3 1.3.6.1.2.1.2.2.1.16.3 1.3.6.1.2.1.2.2.1.10.4 1.3.6.1.2.1.2.2.1.16.4
+echo "Running: ./prober.py $credential_dev2 1 1 1.3.6.1.2.1.2.2.1.10.3 1.3.6.1.2.1.2.2.1.16.3 1.3.6.1.2.1.2.2.1.10.4 1.3.6.1.2.1.2.2.1.16.4 "
+./prober.py $credential_dev2 1 1 1.3.6.1.2.1.2.2.1.10.3 1.3.6.1.2.1.2.2.1.16.3 1.3.6.1.2.1.2.2.1.10.4 1.3.6.1.2.1.2.2.1.16.4
 sleep 3
 echo "tcp done, we hope". 
 awk '{out=""; for(i=7;i<=NF;i++){printf "%s\n",$i};}' ./blob > ./oidsInReq
@@ -219,8 +219,8 @@ echo "tcpdump -c 20 -w ./blob_delay_all -n -i $internetNIC1 host $refdevice1 and
 sudo tcpdump -c 20 -w ./blob_delay_all -n -i $internetNIC1 host $refdevice1 and udp and port $portrefdev1 &
 echo "tcpdump on"
 sleep 3
-echo "prober.py $credential_dev1 0.5 10 1.3.6.1.4.1.4171.40.19"
-prober.py $credential_dev1 0.5 10 1.3.6.1.4.1.4171.40.19
+echo "./prober.py $credential_dev1 0.5 10 1.3.6.1.4.1.4171.40.19"
+./prober.py $credential_dev1 0.5 10 1.3.6.1.4.1.4171.40.19
 echo "Grabbing requests shiping to blob_delay_nsnd, all data in blob_delay_nsnd_all_data"
 echo "sudo tcpdump -ttt -n -r ./blob_delay_all ip dst $refdevice1 udp and dst port $portrefdev1 > ./blob_delay_nsnd"  
 sudo tcpdump -ttt -n -r ./blob_delay_all ip dst $refdevice1 and udp and dst port $portrefdev1 > ./blob_delay_nsnd  
