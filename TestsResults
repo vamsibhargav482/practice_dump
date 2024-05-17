@@ -1,3 +1,52 @@
+    Running
+    timeout 30s /home/codegrade/student/prober 18.219.51.6:1612:public 1 15 1.3.6.1.4.1.4171.40.2 > /home/codegrade/student/data
+    Fri 17 May 2024 10:12:00 AM UTC
+    Fri 17 May 2024 10:12:15 AM UTC
+     Got 15 samples.
+     
+    Checking: Sample rate => 
+    Time: 100.071 +-0.257539 from 14 samples. 
+    Will compare 100.071 to 1 . 
+    OK; Sample rate seems reasonable, less than 0.1% difference (100.071 vs 1) 
+    OK -9907.1
+     
+    Checking data rate (random) 
+    curl -s http://18.219.51.6/counters.conf >  /home/codegrade/student/counters.conf
+    Rates: 534881 +-1364 from 14, with OK -9907.09 .
+    Ok, rate matches (534881 vs 53526000).
+     
+    Checking that we can differentiate between two OIDs.
+    Running; timeout 20s /home/codegrade/student/prober 18.219.51.6:1612:public 1 10 1.3.6.1.4.1.4171.40.2 1.3.6.1.4.1.4171.40.3  > /home/codegrade/student/twoOIDS
+    Fri 17 May 2024 10:12:15 AM UTC
+    Fri 17 May 2024 10:12:35 AM UTC
+    That should have taken (approx) 10s. It took, 1715940755-1715940735 = 20 s. 
+    ERROR: 9 To send 10 requests at 1Hz should have taken arround 10s, you did it in 20 s.
+    Here is a log of your output
+    Problems within CHA.
+    Clean up
+    These are the instances (/instance-JM81GH8LVDXMT5NF/); 
+    Your selection did not identify any servers to delete.
+    Logged; 2024-05-17 10:12:42 54.154.54.157 /server?tag=JM81GH8LVDXMT5NF&status=done&keyid=8fj3u8d
+    The Feedback;
+    cat: feedback.txt: No such file or directory
+    Current files:
+    total 52
+    drwxr-xr-x 2 codegrade codegrade  4096 May 17 10:12 .
+    drwxr-xr-x 8 codegrade codegrade  4096 May 17 10:12 ..
+    -rw-r--r-- 1 codegrade codegrade   114 May 17 10:12 counters.conf
+    -rw-r--r-- 1 codegrade codegrade   333 May 17 10:12 data
+    -rwxr-x--- 1 codegrade codegrade  2053 May 17 10:11 prober
+    -rw-r--r-- 1 codegrade codegrade   153 May 17 10:12 rates.log
+    -rw-r--r-- 1 codegrade codegrade  1693 May 17 10:12 run.2024-05-17_1012.log
+    -rwxr-xr-x 1 codegrade codegrade 16840 May 17 10:11 tcpdump
+    -rw-r--r-- 1 codegrade codegrade    56 May 17 10:12 Trates.log
+    -rw-r--r-- 1 codegrade codegrade     0 May 17 10:12 twoOIDS
+    grep: feedback.txt: No such file or directory
+    grep: feedback.txt: No such file or directory
+    I'm afraid you did not pass the tests.
+
+The grade is not (yet) available
+
 Running:
 /home/codegrade/student/prober 18.219.51.6:1612:public 1 14 1.3.6.1.4.1.4171.40.2 > /home/codegrade/student/data 
 Setting timeout value to 30s [s]
