@@ -4,7 +4,6 @@ import time
 import easysnmp
 import sys
 from collections import defaultdict
-from twisted.internet import reactor, defer
 
 def prober(agent, sample_frequency, samples, *oids):
     session = easysnmp.Session(hostname=agent[0], remote_port=int(agent[1]), community=agent[2], version=2)
@@ -23,51 +22,27 @@ def prober(agent, sample_frequency, samples, *oids):
     except easysnmp.EasySNMPError as error:
         print(f'Error: {error}')
 
-<<<<<<< HEAD
     while sample_count < samples or samples == -1:
         start_time = time.time()
-=======
-    def get_oid(oid):
-        d = defer.Deferred()
->>>>>>> e513d61f2fd5fcb6b316548c6e61fbd0affe34a4
         try:
-            result = session.get(oid)
-            counter_values[oid].append(int(result.value))
-            counter_times[oid].append(int(session.get('1.3.6.1.2.1.1.3.0').value))
+            sysUpTime = session.get('1.3.6.1.2.1.1.3.0').value
+            for oid in oids:
+                result = session.get(oid)
+                counter_values[oid].append(int(result.value))
+                counter_times[oid].append(int(sysUpTime))
 
-            if len(counter_values[oid]) > 1:
-                rate = (counter_values[oid][-1] - counter_values[oid][-2]) / (counter_times[oid][-1] - counter_times[oid][-2])
-                print(f'{counter_times[oid][-1]} | {rate}')
+                if len(counter_values[oid]) > 1:
+                    rate = (counter_values[oid][-1] - counter_values[oid][-2]) / (counter_times[oid][-1] - counter_times[oid][-2])
+                    print(f'{counter_times[oid][-1]} | {rate}')
+            sample_count += 1
         except easysnmp.EasySNMPTimeoutError:
             print('Timeout error, the device did not respond in time.')
         except easysnmp.EasySNMPError as error:
             print(f'Error: {error}')
-<<<<<<< HEAD
         end_time = time.time()
         elapsed_time = end_time - start_time
         sleep_time = max(1/sample_frequency - elapsed_time, 0)
         time.sleep(sleep_time)
-=======
-        finally:
-            d.callback(None)
-        return d
->>>>>>> e513d61f2fd5fcb6b316548c6e61fbd0affe34a4
-
-    def get_all_oids():
-        ds = [get_oid(oid) for oid in oids]
-        return defer.DeferredList(ds)
-
-    def sample():
-        nonlocal sample_count
-        d = get_all_oids()
-        sample_count += 1
-        if sample_count < samples or samples == -1:
-            reactor.callLater(1/sample_frequency, sample)
-        else:
-            reactor.stop()
-
-    reactor.callLater(1/sample_frequency, sample)
-    reactor.run()
 
 if __name__ == "__main__":
     agent = sys.argv[1].split(':')
