@@ -1,3 +1,33 @@
+Running:
+/home/codegrade/student/prober 18.219.51.6:1612:public 1 14 1.3.6.1.4.1.4171.40.2 > /home/codegrade/student/data 
+Setting timeout value to 30s [s]
+Running
+timeout 30s /home/codegrade/student/prober 18.219.51.6:1612:public 1 14 1.3.6.1.4.1.4171.40.2 > /home/codegrade/student/data
+Fri 17 May 2024 12:41:21 AM UTC
+Fri 17 May 2024 12:41:38 AM UTC
+ Got 14 samples.
+ 
+Checking: Sample rate => 
+Time: 116.923 +-0.266469 from 13 samples. 
+Will compare 116.923 to 1 . 
+OK; Sample rate seems reasonable, less than 0.1% difference (116.923 vs 1) 
+OK -11592.3
+ 
+Checking data rate (random) 
+curl -s http://18.219.51.6/counters.conf >  /home/codegrade/student/counters.conf
+Rates: 915537 +-1404760 from 14, with OK -5746.4 .
+Ok, rate matches (915537 vs 53526000).
+ 
+Checking that we can differentiate between two OIDs.
+Running; timeout 20s /home/codegrade/student/prober 18.219.51.6:1612:public 1 10 1.3.6.1.4.1.4171.40.2 1.3.6.1.4.1.4171.40.3  > /home/codegrade/student/twoOIDS
+Fri 17 May 2024 12:41:38 AM UTC
+Fri 17 May 2024 12:41:58 AM UTC
+That should have taken (approx) 10s. It took, 1715906518-1715906498 = 20 s. 
+ERROR: 9 To send 10 requests at 1Hz should have taken arround 10s, you did it in 20 s.
+Here is a log of your output
+Problems within CHA.
+
+
 Fri 17 May 2024 12:02:42 AM UTC . Starting the evaluation of A2.
 ....................................
 This is version
