@@ -23,6 +23,7 @@ def prober(agent, sample_frequency, samples, *oids):
         print(f'Error: {error}')
 
     while sample_count < samples or samples == -1:
+        start_time = time.time()
         try:
             sysUpTime = session.get('1.3.6.1.2.1.1.3.0').value
             for oid in oids:
@@ -38,7 +39,10 @@ def prober(agent, sample_frequency, samples, *oids):
             print('Timeout error, the device did not respond in time.')
         except easysnmp.EasySNMPError as error:
             print(f'Error: {error}')
-        time.sleep(1/sample_frequency)
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+        sleep_time = max(1/sample_frequency - elapsed_time, 0)
+        time.sleep(sleep_time)
 
 if __name__ == "__main__":
     agent = sys.argv[1].split(':')
