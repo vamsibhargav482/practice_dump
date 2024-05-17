@@ -23,8 +23,13 @@ def prober(agent, sample_frequency, samples, *oids):
     except easysnmp.EasySNMPError as error:
         print(f'Error: {error}')
 
+<<<<<<< HEAD
+    while sample_count < samples or samples == -1:
+        start_time = time.time()
+=======
     def get_oid(oid):
         d = defer.Deferred()
+>>>>>>> e513d61f2fd5fcb6b316548c6e61fbd0affe34a4
         try:
             result = session.get(oid)
             counter_values[oid].append(int(result.value))
@@ -37,9 +42,16 @@ def prober(agent, sample_frequency, samples, *oids):
             print('Timeout error, the device did not respond in time.')
         except easysnmp.EasySNMPError as error:
             print(f'Error: {error}')
+<<<<<<< HEAD
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+        sleep_time = max(1/sample_frequency - elapsed_time, 0)
+        time.sleep(sleep_time)
+=======
         finally:
             d.callback(None)
         return d
+>>>>>>> e513d61f2fd5fcb6b316548c6e61fbd0affe34a4
 
     def get_all_oids():
         ds = [get_oid(oid) for oid in oids]
